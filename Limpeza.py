@@ -22,4 +22,4 @@ for x in df.index:
     if a is b:
         df.drop(x, inplace = True)
 
-df.to_excel (r'd:\output.xlsx',index = False)
+df.to_excel (r'output.xlsx',index = False)
