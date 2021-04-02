@@ -1,25 +1,37 @@
 import pandas as pd
 
-teste = pd.read_excel('data2.xlsx')
+teste = pd.read_excel('data.xlsx')
 
 teste = teste.fillna('')
 
 df = pd.DataFrame(teste)
 
-"retirada de elementos iguais"
-for x in df.index:
-    a = df.loc[x, "nome_rh"] 
-    for y in df.index:  
-        b =  df.loc[y, "nome_sgp"]       
-        if a is b:          
-           df.loc[x, "nome_rh"] = ''
-           df.loc[y, "nome_sgp"] = ''
+nomes_sgp = list()
 
-"retirada de linhas sem nomes"
 for x in df.index:
-    a = df.loc[x, "nome_rh"]
-    b = df.loc[x, "nome_sgp"]  
-    if a is b:
+    nome_sgp = df.loc[x,"nome_sgp"]
+    if nome_sgp != '':
+        if nome_sgp not in nomes_sgp:      
+           nomes_sgp.append(nome_sgp)
+           df.loc[x,"nome_sgp"] = ''  
+        else:
+            df.loc[x,"nome_sgp"] = ''             
+      
+for x in df.index:
+    nome_rh = df.loc[x, "nome_rh"] 
+    if nome_rh in nomes_sgp:
+        df.loc[nome_rh, "nome_rh"] = ''
+        nomes_sgp.remove(nome_rh)
+
+for x in df.index:
+    nome_rh = df.loc[x, "nome_rh"]
+    nome_sgp = df.loc[x, "nome_sgp"]  
+    if nome_rh == nome_sgp:
         df.drop(x, inplace = True)
+
+i=0
+for x in nomes_sgp:
+    df.loc[i, "nome_sgp"] = x
+    i+=1 
 
 df.to_excel (r'output.xlsx',index = False)

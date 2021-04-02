@@ -42,5 +42,5 @@ for x in df.index:
     if a is b:
         df.drop(x, inplace = True)    
 
-df.to_excel (r'd:\regra2.xlsx',index = False)
+df.to_excel (r'regra2.xlsx',index = False)
 print(df)
